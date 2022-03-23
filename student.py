@@ -477,6 +477,94 @@ class Student:
             self.var_Year.set("Annual Year")
             self.var_opt.set("Optional Subject")
 
+
+            #=========Generate data set or Take photo Smaples==========
+            def generate_data_set(self):
+                    if self.var_Class.get()=="Select Class" or self.var_Name.get()=="" or self.var_roll.get()=="":
+                    messagebox.showerror("Error","All fields are required",parent=self.root)
+            else:
+                 try:
+                      Update=messagebox.askyesno("Update","Do you want to update this student details",parent=self.root)
+                      if Update>0:
+                           conn=mysql.connector.connect(host="localhost",username="root",password="Garvit@123",database="face_recognisation")
+                           my_cursor=conn.cursor()
+                           my_cursor.execute("select * from student")
+                           myresult=my_cursor.fetchall()
+                           id=0
+                           for x in myresult:
+                                   id+=1
+                           my_cursor.execute("Update student set Name=%s,Roll number=%s,Class=%s,Section=%s,gender=%s,Date of birth=%s,contact=%s,Teacher_Name=%s,PhotoSampleStatus=%s,Annual Year=%s,Optional Subject=%s",(
+                                                                                                          self.var_Name.get(),
+                                                                                                          self.var_roll.get(),
+                                                                                                          self.var_Class.get(),
+                                                                                                          self.var_sec.get(),
+                                                                                                          self.var_gender.get(),
+                                                                                                          self.var_DOB.get(),
+                                                                                                          self.var_contact.get(),
+                                                                                                          self.var_Teacher_Name.get(),
+                                                                                                          self.var_radio1.get(),
+                                                                                                          self.var_Year.get(),
+                                                                                                          self.var_opt.get()==id+1
+                                                                                                          
+                                                                                                        ))        
+
+
+                           conn.commit()
+                           self.fetch_data()
+                           self.reset_data
+                           conn.close()
+
+
+                           #============= Load predifined data on face frontals from opencv===============
+
+                           face_classifier =cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+                           def face_cropped(img):
+                                   gray=cv2.cvtcolor(img, cv2.COLOR_BGR2GRAY)
+                                   faces=face_classifier.detectMultiScale(gray,1.3,5)
+                                   #sacling factor=1.3
+                                   #Minimum Neighbour=5
+
+                                   for(x,y,w,h) in faces:
+                                           face_cropped=img[y:y+h,x:x+w]
+                                           return face_cropped
+
+                           cap=cv2.videoCapture(0)
+                           img_id=0
+                           while True:
+                                   ret,frame=cap.read()
+                                   if face_cropped(my_frame) is not None:
+                                           img_id+=1
+                                   face=cv2.resize(face_cropped(my_frame),(450,450))
+                                   face=cv2.cvtColor(face,cv2.COLOR_BGR2GRAY)
+                                   file_name_path="data/user."+str(id)+"."+str(img_id)+".jpg"
+                                   cv2.imWrite(file_name_path)
+                                   cv2.putText(face,str(img_id),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,255),2)
+                                   cv2.imshow("Crooped Face",face)
+
+                                   if cv2.waitKey(1) ==13 or int(img_id)==100:
+                                           break
+                           cap.release()
+                           cv2.destroyAllWindows()
+                           messagebox.showinfo("Result","Generating data sets completed!!!")
+
+
+                                         
+                                   
+
+                                
+
+
+
+
+
+
+                        
+
+
+                 
+
+
                           
 
 
