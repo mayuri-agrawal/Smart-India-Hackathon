@@ -4,7 +4,9 @@ from tkinter import*
 from tkinter import ttk
 from PIL import Image,ImageTk
 from student import Student
-
+import os
+from student import Student
+from train import Train
 
 class Face_Recognition_System:
     def __init__(self,root):
@@ -53,10 +55,10 @@ class Face_Recognition_System:
         self.photoimg4=ImageTk.PhotoImage(img4)
 
         
-        b1=Button(bg_img,image=self.photoimg4,command=self.student_details,cursor="hand2")
+        b1=Button(bg_img,image=self.photoimg4,command=self.student_details,cursor="hand2",command=self.train_data)
         b1.place(x=200,y=100,width=160,height=160)
 
-        b1=Button(bg_img,text="Student Details",command=self.student_details,cursor="hand2",font=("times new roman",16,"bold"),bg="grey",fg="white")
+        b1=Button(bg_img,text="Student Details",command=self.student_details,cursor="hand2",command=self.train_data,font=("times new roman",16,"bold"),bg="grey",fg="white")
         b1.place(x=200,y=240,width=160,height=40)
 
 
@@ -133,7 +135,7 @@ class Face_Recognition_System:
         b6=Button(bg_img,image=self.photoimg9,cursor="hand2")
         b6.place(x=800,y=350,width=160,height=160)
 
-        b6=Button(bg_img,text="Photo",cursor="hand2",font=("times new roman",16,"bold"),bg="grey",fg="white")
+        b6=Button(bg_img,text="Photo",cursor="hand2",command=self.open_img,font=("times new roman",16,"bold"),bg="grey",fg="white")
         b6.place(x=800,y=490,width=160,height=40)
         
 
@@ -148,6 +150,9 @@ class Face_Recognition_System:
 
         b7=Button(bg_img,text="Exit",cursor="hand2",font=("times new roman",16,"bold"),bg="grey",fg="white")
         b7.place(x=1100,y=490,width=160,height=40)
+    def open_img(self):
+            os.startfile("data")
+
 
 #function button
         
@@ -155,7 +160,10 @@ class Face_Recognition_System:
         self.new_window=Toplevel(self.root)
         self.new_window=Student(self.new_window)
         
-                
+    def train_data(self):
+        self.new_window=Toplevel(self.root)
+        self.new_window=Train(self.new_window)
+                    
          
         
 

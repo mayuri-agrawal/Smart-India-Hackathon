@@ -480,39 +480,44 @@ class Student:
 
             #=========Generate data set or Take photo Smaples==========
             def generate_data_set(self):
-                    if self.var_Class.get()=="Select Class" or self.var_Name.get()=="" or self.var_roll.get()=="":
-                    messagebox.showerror("Error","All fields are required",parent=self.root)
-            else:
-                 try:
-                      Update=messagebox.askyesno("Update","Do you want to update this student details",parent=self.root)
-                      if Update>0:
-                           conn=mysql.connector.connect(host="localhost",username="root",password="Garvit@123",database="face_recognisation")
-                           my_cursor=conn.cursor()
-                           my_cursor.execute("select * from student")
-                           myresult=my_cursor.fetchall()
-                           id=0
-                           for x in myresult:
-                                   id+=1
-                           my_cursor.execute("Update student set Name=%s,Roll number=%s,Class=%s,Section=%s,gender=%s,Date of birth=%s,contact=%s,Teacher_Name=%s,PhotoSampleStatus=%s,Annual Year=%s,Optional Subject=%s",(
-                                                                                                          self.var_Name.get(),
-                                                                                                          self.var_roll.get(),
-                                                                                                          self.var_Class.get(),
-                                                                                                          self.var_sec.get(),
-                                                                                                          self.var_gender.get(),
-                                                                                                          self.var_DOB.get(),
-                                                                                                          self.var_contact.get(),
-                                                                                                          self.var_Teacher_Name.get(),
-                                                                                                          self.var_radio1.get(),
-                                                                                                          self.var_Year.get(),
-                                                                                                          self.var_opt.get()==id+1
-                                                                                                          
-                                                                                                        ))        
+                     if self.var_Class.get()=="Select Class" or self.var_Name.get()=="" or self.var_roll.get()=="":
+                           messagebox.showerror("Error","All fields are required",parent=self.root)
+                     else:
+                          try:
+                              Update=messagebox.askyesno("Update","Do you want to update this student details",parent=self.root)
+                          if Update>0:
+                                        conn=mysql.connector.connect(host="localhost",username="root",password="Garvit@123",database="face_recognisation")
+                                        my_cursor=conn.cursor()
+                                        my_cursor.execute("select * from student")
+                                        myresult=my_cursor.fetchall()
+                                        id=0
+                                        for x in myresult:
+                                                id+=1
+                                        my_cursor.execute("Update student set Name=%s,Roll number=%s,Class=%s,Section=%s,gender=%s,Date of birth=%s,contact=%s,Teacher_Name=%s,PhotoSampleStatus=%s,Annual Year=%s,Optional Subject=%s",(
+                                                                                                                        self.var_Name.get(),
+                                                                                                                        self.var_roll.get(),
+                                                                                                                        self.var_Class.get(),
+                                                                                                                        self.var_sec.get(),
+                                                                                                                        self.var_gender.get(),
+                                                                                                                        self.var_DOB.get(),
+                                                                                                                        self.var_contact.get(),
+                                                                                                                        self.var_Teacher_Name.get(),
+                                                                                                                        self.var_radio1.get(),
+                                                                                                                        self.var_Year.get(),
+                                                                                                                        self.var_opt.get()==id+1
+                                                                                                                        
+                                                                                                                        ))        
 
 
-                           conn.commit()
-                           self.fetch_data()
-                           self.reset_data
-                           conn.close()
+                          conn.commit()
+                          self.fetch_data()
+                          self.reset_data
+                          conn.close()
+                
+                          except Exception as es:
+                                  messagebox.showerror("Error",f"Due To:{str(es)}",parent=self.root)
+
+
 
 
                            #============= Load predifined data on face frontals from opencv===============
